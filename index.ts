@@ -15,18 +15,15 @@ const compilerOptions = {
   skipLibCheck: true,
   target: ts.ScriptTarget.Latest,
   module: ts.ModuleKind.NodeNext,
-  moduleResolution: ts.ModuleResolutionKind.NodeNext
+  moduleResolution: ts.ModuleResolutionKind.NodeNext,
+  allowNonTsExtensions: true
 };
 
-const { fileManager, compilerHost, languageServiceHost } = createHosts({
+const { compilerHost } = createHosts({
   cwd,
   compilerOptions,
-  entryPaths: ['index.ts']
+  entryPaths
 });
-
-const languageService = ts.createLanguageService(languageServiceHost, ts.createDocumentRegistry());
-
-// Not used here, but otherwise used for languageService.findReferences()
 
 let program = ts.createProgram(entryPaths, compilerOptions, compilerHost);
 
@@ -42,3 +39,6 @@ console.log(sourceFile?.resolvedModules?.get('./normal', /* mode */ undefined));
 
 // NOK: resolvedModule
 console.log(sourceFile?.resolvedModules?.get('./block.html?raw', /* mode */ undefined));
+
+const dtsSourceFile = program.getSourceFileByPath(dts);
+// console.log(dtsSourceFile); // OK: isDeclarationFile: true

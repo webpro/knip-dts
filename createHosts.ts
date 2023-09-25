@@ -1,9 +1,7 @@
 import { EOL } from 'node:os';
 import path from 'node:path';
 import ts from 'typescript';
-import { createCustomModuleResolver } from './resolveModuleNames.js';
 import { SourceFileManager } from './SourceFileManager.js';
-import { createCustomSys } from './sys.js';
 
 const libLocation = path.dirname(ts.getDefaultLibFilePath({}));
 
@@ -16,8 +14,8 @@ type CreateHostsOptions = {
 const fileManager = new SourceFileManager();
 
 export const createHosts = ({ cwd, compilerOptions, entryPaths }: CreateHostsOptions) => {
-  const sys = createCustomSys(cwd, []);
-  const resolveModuleNames = createCustomModuleResolver(sys, compilerOptions, []);
+  const sys = ts.sys;
+  const resolveModuleNames = undefined;
 
   const languageServiceHost: ts.LanguageServiceHost = {
     getCompilationSettings: () => compilerOptions,

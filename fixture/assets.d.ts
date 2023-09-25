@@ -1,1 +1,4 @@
-declare module '*.html?raw';
+declare module '*.html?raw' {
+  const value: string;
+  export default value;
+}
